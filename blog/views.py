@@ -12,6 +12,12 @@ from .models import Category
 from .models import Comment
 
 
+def delete_comment(request, pk):
+    comment = get_object_or_404(Comment, pk=pk)
+    post = comment.post
+    comment.delete()
+    return redirect('blog:view_post', post.pk)
+
 def create_comment(request, pk):
     if request.method == 'POST':
         form = request.POST

@@ -1,7 +1,13 @@
 <div class="comments_container">
     {% for comment in post.comment_set.all %}
     <div class="comment_container">
-    <div class="comment_content">{{comment.content}}</div>
+    <div class="comment_content">
+        {{comment.content}}
+        <form method="POST" action="{% url 'blog:delete_comment' comment.pk %}">
+        {% csrf_token %}
+        <input type="submit" value="삭제" />
+        </form>
+    </div>
 
     <p><span>작성일시</span>{{comment.created_at}}</p>
     </div>
@@ -16,7 +22,5 @@
     <p>
         <input type="text" name="comment" value="" class="form_control" placeholder="댓글을 입력하세요..."/>
         <input type="submit" value="submit" />
-        
-        <!-- <a href="{% url 'blog:create_comment' post.pk %}">댓글달기</a> -->
     </p>
 </form>
