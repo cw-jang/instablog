@@ -1,12 +1,16 @@
+{% load bootstrap3 %}
 <div class="comments_container">
     {% for comment in post.comment_set.all %}
     <div class="comment_container">
+    
     <div class="comment_content">
         {{comment.content}}
+
         <form method="POST" action="{% url 'blog:delete_comment' comment.pk %}">
         {% csrf_token %}
-        <input type="submit" value="삭제" />
+        {% bootstrap_button content="" button_type="button" button_class="close" icon="remove" %}
         </form>
+
     </div>
 
     <p><span>작성일시</span>{{comment.created_at}}</p>
