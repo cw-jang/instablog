@@ -5,6 +5,7 @@ from .views import view_post
 from .views import create_post
 from .views import edit_post
 from .views import delete_post
+from .views import create_comment
 
 
 urlpatterns = [
@@ -13,4 +14,5 @@ urlpatterns = [
     url(r'^posts/create/$', create_post, name='create_post'),
     url(r'^posts/(?P<pk>[0-9]+)/edit/$', edit_post, name='edit_post'),
     url(r'^posts/(?P<pk>[0-9]+)/delete/$', delete_post, name='delete_post'),
+    url(r'^posts/(?P<pk>[0-9]+)/create_comment/$', create_comment, name='create_comment')
 ]
