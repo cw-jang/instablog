@@ -9,6 +9,7 @@ from django.core.paginator import PageNotAnInteger
 
 from .models import Post
 from .models import Category
+from .models import Comment
 
 
 def create_comment(request, pk):
@@ -20,7 +21,7 @@ def create_comment(request, pk):
             content=form['comment']
             )
         comment.save()
-        return redirect('view_post', pk)
+        return redirect('blog:view_post', pk)
 
     return view_post(request, pk)
 
@@ -87,9 +88,18 @@ def list_posts(request):
 
 
 def view_post(request, pk):
-    # post = Post.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = request.POST
+        post = get_object_or_404(Post, pk=pk)
+        comment = Comment(
+            post=post,
+            content=form['comment']
+            )
+        comment.save()
+        url = reverse('blog:view_post', kwargs={'pk':pk})
+        return redirect(url)
+    
     post = get_object_or_404(Post, pk=pk)
-
     return render(request, 'view.html', {
         'post': post
         })
