@@ -18,7 +18,7 @@ class PostAdmin(admin.ModelAdmin):
     # inlines = [CommentsInlineAdmin]
     list_filter = ('title', )
     search_fields = ('content', )
-    date_hierarchy = 'created_at'
+    date_hierarchy   = 'created_at'
 
 
 admin.site.register(Post, PostAdmin)
