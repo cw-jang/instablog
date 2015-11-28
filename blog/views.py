@@ -7,9 +7,12 @@ from django.core.paginator import Paginator
 from django.core.paginator import EmptyPage
 from django.core.paginator import PageNotAnInteger
 
+from django.contrib.auth.decorators import login_required
+
 from .models import Post
 from .models import Category
 from .models import Comment
+from .forms import PostForm
 
 
 def delete_comment(request, pk):
@@ -53,25 +56,52 @@ def edit_post(request, pk):
         'categories': categories
         })
 
-def create_post(request):
-    if request.method == 'GET':
-        categories = Category.objects.all()
-        ctx = {
-            'categories': categories,
-        }
-    else:
-        form = request.POST
-        category = get_object_or_404(Category, pk=form['category'])
-        post = Post(
-            title=form['title'],
-            content=form['content'],
-            category=category,
-            )
-        post.full_clean()
-        post.save()
-        url = reverse('blog:view_post', kwargs={'pk':post.pk})
-        return redirect(url)
+# def create_post(request):
+#     if request.method == 'GET':
+#         form = PostForm()
+#         categories = Category.objects.all()
+#         ctx = {
+#             'categories': categories,
+#             'form': form
+#         }
+#     elif request.method == 'POST':
+#         form = PostForm(request.POST)
+#         if form.is_valid():
+#             Post(
+#                 title=form.cleaned_data['title'],
+#                 content=form['content'],
+#                 )
+#             post.save()
+#             return retirect('blog:view_post', pk=post.pk)
 
+#     return render(request, 'edit.html', {
+#         'form': form,})
+
+@login_required
+def create_post(request):
+    # request.user = User.objects.get()
+
+    if not request.user.is_authenticated():
+        raise Exception('님 로그인 안함.')
+
+    print(request.user.username)
+    print(type(request.user))
+    if request.method == 'GET':
+        form = PostForm()
+        
+    else:
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = request.user
+            post.save()
+            return redirect('blog:view_post', pk=post.pk)
+
+    categories = Category.objects.all()
+    ctx = {
+        'categories': categories,
+        'form': form
+    }
     return render(request, 'edit.html', ctx)
 
 def list_posts(request):

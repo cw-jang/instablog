@@ -38,8 +38,11 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blog',
+    'profiles',
     'bootstrap3',
 )
+    
+
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -57,7 +60,7 @@ ROOT_URLCONF = 'instablog.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'template_dir')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -102,3 +105,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+
+LOGIN_URL = '/login/'
+LOGOUT_URL = '/logout/'
