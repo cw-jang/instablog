@@ -6,6 +6,7 @@
 {% block body %}
 
 {% for post in posts %}
+
     <div class="post_container">
         <h3 class="post_title">
             <a href="{% url 'blog:view_post' post.pk %}">{{post.title}}</a>
@@ -15,9 +16,11 @@
     </div>
 
     <div>
-        <p><span>글 갈래:</span>{{post.category.name}} </p>
-        <p><span>작성일시:</span>{{post.created_at}} </p>
+        <p><span>카테고리:</span>{{post.category.name}} 
+        <span>작성:</span>{{post.created_at}} </p>
     </div>
+
+
 
 {% empty %}
     <p>글이 하나도 없습니다</p>

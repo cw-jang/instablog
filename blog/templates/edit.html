@@ -9,13 +9,21 @@
 <h3>{{post.title}} 고치기</h3>
 {% endif %}
 
+{% if messages %}
+{% for message in messages %}
+    <div class="alert{% if message.tags %} alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}{% endif %} alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&#215;</button>
+        {{ message|safe|urlize|linebreaksbr }}
+    </div>
+{% endfor %}
+{% endif %}
+
 {% if form.title.errors or form.content.errors or form.emal.errors %}
 <p> 님하 뭔가 잘못..</p>
 {% endif %}
 
 <form method="POST" action="" enctype="multipart/form-data">
     {% csrf_token %}
-
     {{ form.as_p }}
 
     <p>

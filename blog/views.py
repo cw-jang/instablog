@@ -8,6 +8,7 @@ from django.core.paginator import EmptyPage
 from django.core.paginator import PageNotAnInteger
 
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 from .models import Post
 from .models import Category
@@ -79,13 +80,13 @@ def edit_post(request, pk):
 
 @login_required
 def create_post(request):
-    # request.user = User.objects.get()
 
-    if not request.user.is_authenticated():
-        raise Exception('님 로그인 안함.')
+    # if not request.user.is_authenticated():
+    #     raise Exception('님 로그인 안함.')
 
-    print(request.user.username)
-    print(type(request.user))
+    messages.add_message(request, messages.ERROR, '메시지 테스트!!')
+    messages.add_message(request, messages.INFO, '메시지 테스트!!')
+
     if request.method == 'GET':
         form = PostForm()
         
@@ -106,7 +107,7 @@ def create_post(request):
 
 def list_posts(request):
     page = request.GET.get('page', 1)
-    per_page = 2
+    per_page = 5
 
     posts = Post.objects.order_by('-created_at')
     pg = Paginator(posts, per_page)

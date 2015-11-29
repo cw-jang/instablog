@@ -1,13 +1,29 @@
-{% load bootstrap3 %}<!DOCTYPE html>
+{% load bootstrap3 %}
+<!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
-    <title> {% block page_title %}InstaBlog{% endblock %}</title>
-{% bootstrap_css %}
-{% bootstrap_javascript %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> {% block page_title %}Instablog{% endblock %}</title>
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+
 </head>
 
 <body>
+
+<p>
+<h1 class="blog_name">{ INSTABLOG }</h1>
+
+<a href="{% url 'blog:list_posts' %}" class="btn btn-primary">글 목록</a>
+<a href="{% url 'blog:create_post' %}" class="btn btn-primary">새 글</a>
+
+{# {% bootstrap_button content="글 목록" button_type="link" button_class="btn-primary" icon="" %} #}
+
+{# {% bootstrap_button content="새 글" button_type="link" button_class="" icon="" %} #}
+</p>
+
 {% block header %}{% endblock %}
 
 {% block body %}{% endblock %}

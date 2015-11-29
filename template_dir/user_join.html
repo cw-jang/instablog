@@ -1,0 +1,38 @@
+{% load bootstrap3 %}
+
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{% block title %} <h4>회원가입</h4>{% endblock %}
+
+{% block content %} 
+
+{% if messages %}
+{% for message in messages %}
+    <div class="alert{% if message.tags %} alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}{% endif %} alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&#215;</button>
+        {{ message|safe|urlize|linebreaksbr }}
+    </div>
+{% endfor %}
+{% endif %}
+
+<form method="post" action="{% url 'user_join_url' %}">
+{% csrf_token %}
+<table>
+<tr>
+    <td> {{form.username.label_tag}} </td>
+    <td> {{form.username}} </td>
+</tr>
+<tr>
+    <td> {{form.password.label_tag}} </td>
+    <td> {{form.password}} </td>
+</tr>
+<tr>
+    <td> {{form.gender.label_tag}} </td>
+    <td> {{form.gender}} </td>
+</tr>
+</table>
+<input type="submit" value="가입" />
+</form>
+
+{% endblock %}
