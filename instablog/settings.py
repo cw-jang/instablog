@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'blog',
     'profiles',
     'bootstrap3',
+    'blogtest'
 )
     
 
