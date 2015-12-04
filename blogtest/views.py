@@ -3,6 +3,7 @@ from django.shortcuts import redirect
 from django.shortcuts import get_object_or_404
 
 from django.core.urlresolvers import reverse
+from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 
 from .models import Category
@@ -25,7 +26,7 @@ def create_post(request):
         if form.is_valid():
             post = form.save(commit=False)
 
-            post.user1 = request.user
+            post.user = request.user
             
             # TEMP: 로그인처리가 제대로 안되는것 같아서 확인용 임시코드
             # User = get_user_model()
@@ -48,8 +49,12 @@ def create_post(request):
 @login_required
 def delete_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    post.delete()
-    return redirect('blogtest:list_posts')
+
+    if request.user == post.user:
+        post.delete()
+        return redirect('blogtest:list_posts')
+    else:
+        return HttpResponseForbidden()
 
 
 @login_required
