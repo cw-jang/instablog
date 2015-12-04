@@ -9,7 +9,7 @@
 
         <form method="POST" action="{% url 'blog:delete_comment' comment.pk %}" class="pull-left">
         {% csrf_token %}
-        {% bootstrap_button content="" button_type="reset" button_class="close" icon="remove" %}
+        {% bootstrap_button content="" button_type="submit" button_class="close" icon="remove" %}
         </form>
         <p class="clearfix"></p>
         <p><span>작성일시</span>{{comment.created_at}}</p>

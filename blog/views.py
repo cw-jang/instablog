@@ -35,6 +35,7 @@ def create_comment(request, pk):
 
     return view_post(request, pk)
 
+@login_required
 def delete_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == 'POST':
@@ -45,17 +46,41 @@ def delete_post(request, pk):
         'post': post
         })
 
-def edit_post(request, pk):
-    if request.method == 'GET':
-        post = get_object_or_404(Post, pk=pk)
-        categories = Category.objects.all()
-    else:
-        return create_post(request)
 
-    return render(request, 'edit.html', {
-        'post': post, 
-        'categories': categories
-        })
+@login_required
+def edit_post(request, pk):
+    messages.add_message(request, messages.ERROR, '포스트 수정중')
+    post = get_object_or_404(Post, pk=pk)
+
+    if request.method == 'GET':
+        form = PostForm(instance=post)
+    else:
+        form = PostForm(request.POST)
+
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = request.user
+            post.save()
+            return redirect('blog:view_post', pk=post.pk)
+
+    categories = Category.objects.all()
+    ctx = {
+        'categories': categories,
+        'form': form
+    }
+    return render(request, 'edit.html', ctx)
+
+# def edit_post(request, pk):
+#     if request.method == 'GET':
+#         post = get_object_or_404(Post, pk=pk)
+#         categories = Category.objects.all()
+#     else:
+#         return create_post(request)
+
+#     return render(request, 'edit.html', {
+#         'post': post, 
+#         'categories': categories
+#         })
 
 # def create_post(request):
 #     if request.method == 'GET':
@@ -84,8 +109,8 @@ def create_post(request):
     # if not request.user.is_authenticated():
     #     raise Exception('님 로그인 안함.')
 
-    messages.add_message(request, messages.ERROR, '메시지 테스트!!')
-    messages.add_message(request, messages.INFO, '메시지 테스트!!')
+    # messages.add_message(request, messages.ERROR, '메시지 테스트!!')
+    # messages.add_message(request, messages.INFO, '메시지 테스트!!')
 
     if request.method == 'GET':
         form = PostForm()
